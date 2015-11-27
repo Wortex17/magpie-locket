@@ -1,0 +1,23 @@
+{
+  "name": "magpie-locket",
+  "version": "0.0.1",
+  "description": "A Javascript Object Storage format, used by Magpie. Supports flattening objects, custom serialization and encryption.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Wortex17/magpie-locket.git"
+  },
+  "author": "Patrick Michael Hopf",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Wortex17/magpie-locket/issues"
+  },
+  "homepage": "https://github.com/Wortex17/magpie-locket#readme",
+  "dependencies": {
+    "lodash": "^3.10.1",
+    "mocha": "^2.3.4"
+  }
+}
