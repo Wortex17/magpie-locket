@@ -226,4 +226,31 @@ describe('Pancake (Flattening Component)', function() {
 
     });
 
+    describe('#unflatten(obj)', function () {
+        it('should throw an exception, if non-arrays are given as input', function () {
+            assert.throws(function(){pancake.unflatten(0)});
+            assert.throws(function(){pancake.unflatten(true)});
+            assert.throws(function(){pancake.unflatten("string")});
+            assert.throws(function(){pancake.unflatten({obj:true})});
+            assert.throws(function(){pancake.unflatten(null)});
+            assert.throws(function(){pancake.unflatten(undefined)});
+        });
+
+
+        it('should return null, if an empty array is given as input', function () {
+            assert.deepEqual(pancake.unflatten([]), null);
+        });
+
+        it('should return the first primitive in the array, if the first element is not a flattened object', function () {
+            assert.deepEqual(pancake.unflatten([0,1,2]), 0);
+            assert.deepEqual(pancake.unflatten([true, false]), true);
+            assert.deepEqual(pancake.unflatten(["string", "strong"]), "string");
+            assert.deepEqual(pancake.unflatten([null, {obj:true}]), null);
+            assert.deepEqual(""+pancake.unflatten([{obj:true}, {obj:false}]), ""+{obj:true});
+            assert.deepEqual(""+pancake.unflatten([[0,1,2], [2,3,4]]), ""+[0,1,2]);
+            assert.deepEqual(pancake.unflatten([undefined]), undefined);
+        });
+
+    });
+
 });
