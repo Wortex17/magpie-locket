@@ -126,6 +126,22 @@ describe('Pancake (Flattening Component)', function() {
             assert.equal(childReference, 1, "First element contains reference pointing to child");
         });
 
+        it('should flatten nested objects', function () {
+            var arg = {
+                a: {
+                    b: {
+                        c:true
+                    }
+                }
+            };
+            var result = pancake.flatten(arg);
+            assert(Array.isArray(result), "Is Array");
+            assert.equal(result.length, 3, "Contains elements equal to the amount of nesting levels");
+            assert.equal(result[0].a, 1, "arg.a points to the originally nested element");
+            assert.equal(result[1].b, 2, "arg.a.b points to the originally nested element");
+            assert.equal(result[2].c, true, "arg.a.b.c is primitively true");
+        });
+
         it('should return an array with given array, if an array with only value type elements is given', function () {
             var arg = [44, true, "foo"];
             var result = pancake.flatten(arg);
@@ -195,6 +211,17 @@ describe('Pancake (Flattening Component)', function() {
             }, "Result can be stringified to JSON");
             assert.equal(argA.b, 1, "argA.b points to argB");
             assert.equal(argB.a, 0, "argB.a points to argA");
+        });
+
+
+        it('should flatten nested arrays', function () {
+            var arg = [[[true]]];
+            var result = pancake.flatten(arg);
+            assert(Array.isArray(result), "Is Array");
+            assert.equal(result.length, 3, "Contains elements equal to the amount of nesting levels");
+            assert.equal(result[0][0], 1, "arg[0] points to the originally nested arg[0][0]");
+            assert.equal(result[1][0], 2, "arg[0][0] points to the originally nested arg[0][0][0]");
+            assert.equal(result[2][0], true, "arg[0][0][0] is primitively true");
         });
 
     });
