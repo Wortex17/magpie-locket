@@ -251,6 +251,54 @@ describe('Pancake (Flattening Component)', function() {
             assert.deepEqual(pancake.unflatten([undefined]), undefined);
         });
 
+
+        it('should return return the same structure as before flattening', function () {
+            var input;
+
+            //Obj
+            input = {
+                number: 44,
+                bool: true,
+                string: "foobar",
+                object: {child:true},
+                array: ['chi', 'ld'],
+                buffer: new Buffer("buffer")
+            };
+            assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), JSON.stringify(input));
+
+            //Array
+            input = [44,true,"foobar",{child:true},['chi', 'ld'],new Buffer("buffer")];
+
+            assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), JSON.stringify(input));
+
+            //Deep
+            input = {
+                a: {
+                    b: {
+                        c:true
+                    }
+                }
+            };
+
+            assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), JSON.stringify(input));
+
+            //Multiref
+            input = {
+                buff: new Buffer("very loong")
+            };
+            input.a = input.buff;
+            input.b = {b: input.buff};
+
+            assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), JSON.stringify(input));
+
+        });
+
+        it('should cut off any unreferenced (excess) objects', function () {
+
+            assert.equal(JSON.stringify(pancake.unflatten([{a:true},{e:3}])), JSON.stringify({a:true}));
+
+        });
+
     });
 
 });
