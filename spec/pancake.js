@@ -252,8 +252,8 @@ describe('Pancake (Flattening Component)', function() {
         });
 
 
-        it('should return return the same structure as before flattening', function () {
-            var input;
+        it('should return return the same structure as before flattening [Object]', function () {
+            var input, stringified;
 
             //Obj
             input = {
@@ -264,32 +264,40 @@ describe('Pancake (Flattening Component)', function() {
                 array: ['chi', 'ld'],
                 buffer: new Buffer("buffer")
             };
-            assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), JSON.stringify(input));
+            stringified = JSON.stringify(input);
+            assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), stringified);
 
+        });
+        it('should return return the same structure as before flattening [Array]', function () {
+            var input, stringified;
             //Array
-            input = [44,true,"foobar",{child:true},['chi', 'ld'],new Buffer("buffer")];
-
-            assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), JSON.stringify(input));
-
+            input = [44, true, "foobar", {child: true}, ['chi', 'ld'], new Buffer("buffer")];
+            stringified = JSON.stringify(input);
+            assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), stringified);
+        });
+        it('should return return the same structure as before flattening [Deeply nested]', function () {
+            var input, stringified;
             //Deep
             input = {
                 a: {
                     b: {
-                        c:true
+                        c: true
                     }
                 }
             };
-
-            assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), JSON.stringify(input));
-
+            stringified = JSON.stringify(input);
+            assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), stringified);
+        });
+        it('should return return the same structure as before flattening [Duplicate references]', function () {
+            var input, stringified;
             //Multiref
             input = {
                 buff: new Buffer("very loong")
             };
             input.a = input.buff;
             input.b = {b: input.buff};
-
-            assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), JSON.stringify(input));
+            stringified = JSON.stringify(input);
+            assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), stringified);
 
         });
 
