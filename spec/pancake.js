@@ -252,7 +252,7 @@ describe('Pancake (Flattening Component)', function() {
         });
 
 
-        it('should return return the same structure as before flattening [Object]', function () {
+        it('should return the same structure as before flattening [Object]', function () {
             var input, stringified;
 
             //Obj
@@ -268,14 +268,14 @@ describe('Pancake (Flattening Component)', function() {
             assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), stringified);
 
         });
-        it('should return return the same structure as before flattening [Array]', function () {
+        it('should return the same structure as before flattening [Array]', function () {
             var input, stringified;
             //Array
             input = [44, true, "foobar", {child: true}, ['chi', 'ld'], new Buffer("buffer")];
             stringified = JSON.stringify(input);
             assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), stringified);
         });
-        it('should return return the same structure as before flattening [Deeply nested]', function () {
+        it('should return the same structure as before flattening [Deeply nested]', function () {
             var input, stringified;
             //Deep
             input = {
@@ -288,7 +288,7 @@ describe('Pancake (Flattening Component)', function() {
             stringified = JSON.stringify(input);
             assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), stringified);
         });
-        it('should return return the same structure as before flattening [Duplicate references]', function () {
+        it('should return the same structure as before flattening [Duplicate references]', function () {
             var input, stringified;
             //Multiref
             input = {
@@ -299,6 +299,15 @@ describe('Pancake (Flattening Component)', function() {
             stringified = JSON.stringify(input);
             assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), stringified);
 
+        });
+
+        it('should return the same structure as before flattening [Undefined]', function () {
+            assert.strictEqual(pancake.unflatten(pancake.flatten()), undefined);
+
+        });
+
+        it('should return undefined if given something undefined', function () {
+            assert.strictEqual(pancake.unflatten([undefined]), undefined);
         });
 
         it('should cut off any unreferenced (excess) objects', function () {
