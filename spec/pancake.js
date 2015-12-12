@@ -311,9 +311,55 @@ describe('Pancake (Flattening Component)', function() {
         });
 
         it('should cut off any unreferenced (excess) objects', function () {
-
             assert.equal(JSON.stringify(pancake.unflatten([{a:true},{e:3}])), JSON.stringify({a:true}));
+        });
 
+        it('should call onConstruct callback for each complex object', function (done) {
+            this.timeout(500);
+
+            var input = {
+                number: 44,
+                bool: true,
+                string: "foobar",
+                object: {child:true},
+                array: ['chi', 'ld'],
+                buffer: new Buffer("buffer")
+            };
+            var flattened = pancake.flatten(input);
+
+            var complexCount = 0;
+            pancake.unflatten(flattened, function onConstruct(reconstructionObject, defaultOnConstruct){
+                complexCount++;
+                if(complexCount == 4)
+                {
+                    done();
+                }
+                return defaultOnConstruct(reconstructionObject);
+            });
+        });
+
+        it('should call onRelink callback for object containing links', function (done) {
+            this.timeout(500);
+
+            var input = {
+                number: 44,
+                bool: true,
+                string: "foobar",
+                object: {child:true},
+                array: ['chi', 'ld'],
+                buffer: new Buffer("buffer")
+            };
+            var flattened = pancake.flatten(input);
+
+            var complexCount = 0;
+            pancake.unflatten(flattened, null, function onRelink(object, links, defaultOnRelink){
+                complexCount++;
+                if(complexCount == 1)
+                {
+                    done();
+                }
+                return defaultOnRelink(object, links);
+            });
         });
 
     });
