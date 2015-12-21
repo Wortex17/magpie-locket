@@ -4,7 +4,7 @@ var
 
 describe('Pancake (Flattening Component)', function() {
 
-    var pancake = require('../lib/flatten');
+    var pancake = require('../lib/pancake');
 
     describe('#flatten(obj)', function () {
         it('should return empty array when the obj is not given', function () {
