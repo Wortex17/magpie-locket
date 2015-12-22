@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/Wortex17/magpie-locket#readme",
   "dependencies": {
+    "bson": "^0.4.20",
     "lodash": "^3.10.1",
-    "mocha": "^2.3.4"
+    "mocha": "^2.3.4",
+    "object-hash": "^0.9.4"
   }
 }
