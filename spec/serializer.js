@@ -154,7 +154,13 @@ describe('Field Serializer', function() {
                     C: 'c'
                 },
                 buffer: new Buffer("buffer"),
-                date: new Date()
+                date: new Date(),
+                regex: /magpie/i,
+                func: function add(a,b){return a+b},
+                nan: NaN,
+                null: null,
+                inf: Infinity,
+                ninf: -Infinity
             };
             var serialized = serializer.serialize(object);
             var deserialized = serializer.deserialize(serialized);

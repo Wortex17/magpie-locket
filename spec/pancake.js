@@ -283,7 +283,13 @@ describe('Pancake (Flattening Component)', function() {
                 object: {child:true},
                 array: ['chi', 'ld'],
                 buffer: new Buffer("buffer"),
-                date: new Date()
+                date: new Date(),
+                regex: /magpie/i,
+                func: function add(a,b){return a+b},
+                nan: NaN,
+                null: null,
+                inf: Infinity,
+                ninf: -Infinity
             };
             stringified = JSON.stringify(input);
             assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), stringified);
