@@ -289,7 +289,8 @@ describe('Pancake (Flattening Component)', function() {
                 nan: NaN,
                 null: null,
                 inf: Infinity,
-                ninf: -Infinity
+                ninf: -Infinity,
+                typedArray: new Uint8Array()
             };
             stringified = JSON.stringify(input);
             assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), stringified);

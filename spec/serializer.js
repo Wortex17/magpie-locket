@@ -160,7 +160,8 @@ describe('Field Serializer', function() {
                 nan: NaN,
                 null: null,
                 inf: Infinity,
-                ninf: -Infinity
+                ninf: -Infinity,
+                typedArray: new Uint8Array()
             };
             var serialized = serializer.serialize(object);
             var deserialized = serializer.deserialize(serialized);
