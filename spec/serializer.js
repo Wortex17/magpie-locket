@@ -153,7 +153,8 @@ describe('Field Serializer', function() {
                     B: 'b',
                     C: 'c'
                 },
-                buffer: new Buffer("buffer")
+                buffer: new Buffer("buffer"),
+                date: new Date()
             };
             var serialized = serializer.serialize(object);
             var deserialized = serializer.deserialize(serialized);

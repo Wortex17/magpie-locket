@@ -126,6 +126,26 @@ describe('Pancake (Flattening Component)', function() {
             assert.equal(childReference, 1, "First element contains reference pointing to child");
         });
 
+
+        it('should return an array with given object and a date, if an object with value and one date type members is given', function () {
+            var arg = {
+                number: 44,
+                bool: true,
+                string: "foobar",
+                date:  new Date()
+            };
+            var argJson = JSON.stringify(arg);
+            var argChild = arg.date;
+            var result = pancake.flatten(arg);
+            assert(Array.isArray(result), "Is Array");
+            assert.equal(result.length, 2, "Contains exactly two elements");
+            assert.equal(result[0], arg, "First element is original object");
+            assert.notEqual(JSON.stringify(result[0]), argJson, "First element has been altered");
+            assert.equal(result[1], argChild, "Second element is the child of the original object");
+            var childReference = result[0].date;
+            assert.equal(childReference, 1, "First element contains reference pointing to child");
+        });
+
         it('should flatten nested objects', function () {
             var arg = {
                 a: {
@@ -262,7 +282,8 @@ describe('Pancake (Flattening Component)', function() {
                 string: "foobar",
                 object: {child:true},
                 array: ['chi', 'ld'],
-                buffer: new Buffer("buffer")
+                buffer: new Buffer("buffer"),
+                date: new Date()
             };
             stringified = JSON.stringify(input);
             assert.equal(JSON.stringify(pancake.unflatten(pancake.flatten(input))), stringified);
