@@ -2,7 +2,8 @@
 
 var
     assert = require('assert'),
-    _ = require('lodash')
+    _ = require('lodash'),
+    NodeRSA = require('node-rsa')
     ;
 var
     superobject = require('../spec-tools/superobject')
@@ -284,6 +285,72 @@ describe('Locket', function() {
             locket.writeContent(locketObj, "test", superobject.create(true));
             var result = locket.convertBSONToLocket(locket.convertLocketToBSON(locketObj, true));
             assert.deepEqual(result, locketObj);
+        });
+    });
+
+    describe('#lock', function () {
+
+        var locketObj = locket.createNew();
+        locket.writeContent(locketObj, "test", superobject.createWithCircRefs());
+        var keypair = new NodeRSA({b: 512});
+
+
+        it('should encrypt the locket without problems', function () {
+            assert.doesNotThrow(function(){
+                locket.lock(locketObj, keypair);
+            });
+        });
+
+        it('should return a plain object with the correct properties', function () {
+            var lockedLocket = locket.lock(locketObj, keypair);
+            assert(_.isPlainObject(lockedLocket), "lockedLocket is plain object");
+            assert(_.isString(lockedLocket.a), "lockedLocket.a is String");
+            assert(_.isString(lockedLocket.c), "lockedLocket.c is String");
+            assert(_.isString(lockedLocket.l), "lockedLocket.l is String");
+        });
+    });
+
+
+    describe('#testLock', function () {
+
+        var locketObj = locket.createNew();
+        locket.writeContent(locketObj, "test", superobject.create(true));
+        var keypair = new NodeRSA({b: 512});
+        var keypair2 = new NodeRSA({b: 512});
+        var lockedLocket = locket.lock(locketObj, keypair);
+
+
+        it('should return true when testing the correct keypair', function () {
+            assert.equal(locket.testLock(lockedLocket, keypair), true);
+        });
+        it('should return false when testing a different keypair', function () {
+            assert.equal(locket.testLock(lockedLocket, keypair2), false);
+        });
+    });
+
+    describe('#unlock', function () {
+
+        var locketObj = locket.createNew();
+        locket.writeContent(locketObj, "test", superobject.create(true));
+        var keypair = new NodeRSA({b: 512});
+        var keypair2 = new NodeRSA({b: 512});
+        var lockedLocket = locket.lock(locketObj, keypair);
+
+
+        it('should decrypt the locket without problems', function () {
+            assert.doesNotThrow(function(){
+                locket.unlock(lockedLocket, keypair);
+            });
+        });
+        it('should throw exception when unlocking with wrong keypair', function () {
+            assert.throws(function(){
+                locket.unlock(lockedLocket, keypair2);
+            });
+        });
+
+        it('should return the same locket as before locking', function () {
+            var unlockedLocket = locket.unlock(lockedLocket, keypair);
+            assert.deepEqual(unlockedLocket, locketObj);
         });
     });
 
