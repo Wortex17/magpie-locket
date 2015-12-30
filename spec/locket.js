@@ -135,6 +135,7 @@ describe('Locket', function() {
         var field = locket.addField(locketObj, "test");
         var historyPrevLength = field.history.length;
         locket.updateSerializedContentOfField(field, ["a"]);
+        var field = locket.getField(locketObj, "test");
 
         it('should set the serializedContent of the field', function () {
             assert.deepEqual(field.serializedContent, ["a"]);
@@ -148,6 +149,7 @@ describe('Locket', function() {
         var locketObj = locket.createNew();
         var serContent = ["a"];
         locket.setSerializedContent(locketObj, "test", serContent);
+        var field = locket.getField(locketObj, "test");
 
         it('should create the field if it does not exist', function () {
             assert(locket.hasField(locketObj, "test"), "locket.hasField");
@@ -155,12 +157,17 @@ describe('Locket', function() {
         it('should set the serializedContent of the field', function () {
             assert.equal(locket.getField(locketObj, "test").serializedContent, serContent);
         });
+        it('should extend the history of the field', function () {
+            assert(field.history.length > 0, "history.length > 0");
+        });
     });
 
     describe('#updateSerializedContent()', function () {
         var locketObj = locket.createNew();
         var serContent = ["a"];
         locket.setSerializedContent(locketObj, "test", []);
+        var field = locket.getField(locketObj, "test");
+        var historyPrevLength = field.history.length;
         locket.updateSerializedContent(locketObj, "test", serContent);
         locket.updateSerializedContent(locketObj, "test2", serContent);
 
@@ -169,6 +176,9 @@ describe('Locket', function() {
         });
         it('should set the serializedContent of the field', function () {
             assert.equal(locket.getField(locketObj, "test").serializedContent, serContent);
+        });
+        it('should extend the history of the field', function () {
+            assert(field.history.length > historyPrevLength, "history.length > historyPrevLength");
         });
     });
 
@@ -200,6 +210,14 @@ describe('Locket', function() {
             assert.doesNotThrow(function(){
                 locket.writeContent(locketObj, "test", superobject.createWithCircRefs());
             });
+        });
+        it('should extend the history of the field', function () {
+            var locketObj = locket.createNew();
+
+            locket.writeContent(locketObj, "test", "a");
+            var field = locket.getField(locketObj, "test");
+
+            assert(field.history.length > 0, "history.length > 0");
         });
     });
 
