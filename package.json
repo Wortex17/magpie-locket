@@ -1,6 +1,6 @@
 {
   "name": "magpie-locket",
-  "version": "0.0.1",
+  "version": "0.5.0",
   "description": "A Javascript Object Storage format, used by Magpie. Supports flattening objects, custom serialization and encryption.",
   "main": "index.js",
   "scripts": {
